@@ -4,8 +4,7 @@ public class PlayerState {
 
     private MovementSpeedAttribute last_mvmt_speed_packet = null;
     private byte last_sent_metadata_packet = (byte) 0x00;
-    private byte last_paper_metadata_packet = (byte) 0x00;
-    private boolean elytra_pose = false;
+    private boolean client_elytra = false;
 
 
     public void set_last_mvmt_speed_packet(MovementSpeedAttribute msa) { this.last_mvmt_speed_packet = msa; }
@@ -16,12 +15,8 @@ public class PlayerState {
 
     public byte get_last_metadata_packet() { return this.last_sent_metadata_packet; }
 
-    public void set_last_paper_packet(byte b) { this.last_paper_metadata_packet = b; }
+    public void set_client_elytra(boolean bool) { this.client_elytra = bool; }
 
-    public byte get_last_paper_packet() { return this.last_paper_metadata_packet; }
-
-    public void set_elytra_pose(boolean bool) { this.elytra_pose = bool; }
-
-    public boolean get_elytra_pose() { return this.elytra_pose; }
+    public boolean get_client_elytra() { return this.client_elytra; }
 
 }
