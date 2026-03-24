@@ -8,4 +8,7 @@ Due to the way sprinting is implemented on the client, it is not possible to com
 - The invisibility/glowing effects are given/removed
 - The player exits Elytra flight
 
+For Developers:
+If you want to stop some of the sprint glitches listed above from occuring, you can also cancel all metadata packets with index 0. This makes players unable to see themselves be set on fire or be made invisible/glowing.
+
 This plugin will most likely interfere with some AntiCheats
