@@ -1,6 +1,7 @@
 package ch.zorty.sprintFix.listeners;
 
 import ch.zorty.sprintFix.MovementSpeedAttribute;
+import ch.zorty.sprintFix.PlayerState;
 import ch.zorty.sprintFix.SprintFix;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -8,6 +9,8 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedAttribute;
 import com.comphenix.protocol.wrappers.WrappedAttributeModifier;
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,8 +26,11 @@ public class AttributeListener extends PacketAdapter {
 
     @Override
     public void onPacketSending(PacketEvent event) {
+        Player p = event.getPlayer();
         int entity_id = event.getPacket().getIntegers().read(0);
-        if(entity_id != event.getPlayer().getEntityId()) return;
+        if(entity_id != p.getEntityId()) return;
+
+        PlayerState state = plugin.getPlayerState(p);
 
         List<WrappedAttribute> attributes = event.getPacket().getAttributeCollectionModifier().read(0);
         List<WrappedAttribute> attr_copy = new ArrayList<>();
@@ -36,15 +42,16 @@ public class AttributeListener extends PacketAdapter {
                     msa.addModifier(mod.getKey().getFullKey(), mod.getAmount(), mod.getOperation().getId());
                 }
 
-                MovementSpeedAttribute last_msa = plugin.getPlayerState(event.getPlayer()).get_last_mvmt_speed_packet();
+                MovementSpeedAttribute last_msa = state.get_last_mvmt_speed_packet();
                 if(last_msa == null) {
                     attr_copy.add(attr);
-                    plugin.getPlayerState(event.getPlayer()).set_last_mvmt_speed_packet(msa);
+                    state.set_last_mvmt_speed_packet(msa);
                 } else {
+
                     // Check if movement_speed attribute changed except for removing sprint
                     if(!msa.equals(last_msa) && !msa.equals(last_msa.copy_without_sprint())) {
                         attr_copy.add(attr);
-                        plugin.getPlayerState(event.getPlayer()).set_last_mvmt_speed_packet(msa);
+                        state.set_last_mvmt_speed_packet(msa);
                     }
                 }
             } else {

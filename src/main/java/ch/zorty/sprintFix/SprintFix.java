@@ -20,6 +20,13 @@ public final class SprintFix extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        if (getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
+            getLogger().severe("ProtocolLib not found! Disabling plugin.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         this.protocolManager = ProtocolLibrary.getProtocolManager();
         protocolManager.addPacketListener(new AttributeListener(this));
         protocolManager.addPacketListener(new MetadataListener(this));
@@ -30,8 +37,12 @@ public final class SprintFix extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        HandlerList.unregisterAll();
-        protocolManager.removePacketListeners(this);
+        HandlerList.unregisterAll(this);
+
+        if(protocolManager != null) {
+            protocolManager.removePacketListeners(this);
+        }
+        player_state.clear();
         this.getLogger().info("SprintFix disabled");
     }
 

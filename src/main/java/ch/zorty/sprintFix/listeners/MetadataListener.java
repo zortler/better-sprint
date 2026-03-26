@@ -22,9 +22,11 @@ public class MetadataListener extends PacketAdapter {
 
     @Override
     public void onPacketSending(PacketEvent event) {
-        int entity_id = event.getPacket().getIntegers().read(0);
-        if(entity_id != event.getPlayer().getEntityId()) return;
         Player p = event.getPlayer();
+
+        int entity_id = event.getPacket().getIntegers().read(0);
+        if(entity_id != p.getEntityId()) return;
+
         List<WrappedDataValue> metadata = event.getPacket().getDataValueCollectionModifier().read(0);
         List<WrappedDataValue> newMetadata = new ArrayList<>();
 
@@ -34,6 +36,7 @@ public class MetadataListener extends PacketAdapter {
 
                 byte flags = (byte) value.getValue();
 
+                // Check if player is exiting elytra
                 if(plugin.getPlayerState(p).get_client_elytra() && (flags & 0x80) == 0) {
 
                     plugin.getPlayerState(p).set_last_metadata_packet(flags);
@@ -51,7 +54,7 @@ public class MetadataListener extends PacketAdapter {
                     }
                 }
 
-            // Client can do poses fine mostly
+            // Client can do poses perfectly fine
             } else if(value.getIndex() != 6) {
                 newMetadata.add(value);
             }

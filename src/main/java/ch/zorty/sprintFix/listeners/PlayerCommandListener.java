@@ -12,7 +12,7 @@ public class PlayerCommandListener extends PacketAdapter {
     SprintFix plugin;
 
     public PlayerCommandListener(SprintFix plugin) {
-        super(plugin, ListenerPriority.HIGHEST, PacketType.Play.Client.ENTITY_ACTION);
+        super(plugin, ListenerPriority.LOWEST, PacketType.Play.Client.ENTITY_ACTION);
         this.plugin = plugin;
     }
 
