@@ -3,5 +3,5 @@ version: '1.0'
 main: ch.zorty.sprintFix.SprintFix
 description: stops server from interfering with client movement
 author: Zorty
-api-version: '1.21'
+api-version: '1.13'
 depend: [ProtocolLib]

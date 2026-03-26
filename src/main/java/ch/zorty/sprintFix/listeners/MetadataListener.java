@@ -22,6 +22,8 @@ public class MetadataListener extends PacketAdapter {
 
     @Override
     public void onPacketSending(PacketEvent event) {
+        int entity_id = event.getPacket().getIntegers().read(0);
+        if(entity_id != event.getPlayer().getEntityId()) return;
         Player p = event.getPlayer();
         List<WrappedDataValue> metadata = event.getPacket().getDataValueCollectionModifier().read(0);
         List<WrappedDataValue> newMetadata = new ArrayList<>();
